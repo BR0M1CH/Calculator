@@ -1,0 +1,73 @@
+from tkinter import *
+from tkinter import ttk
+
+import Calculator_functions as calc
+
+
+window = Tk()
+window.title("Calculator")
+window.geometry("480x350")
+# lbl = Label(window, text = "test", font = ("Times New Roman", 14))
+# lbl.grid(column=1, row=0)
+# btn = Button(window, text = "Test", font = ("Times New Roman", 12))
+# btn.grid(column = 1, row = 1)
+# btn2 = Button(window, text = "Test2", font = ("Times New Roman", 12), bg="grey", fg="white", command = btn2_test)
+# btn2.grid(column = 0, row = 1)
+# txt = Entry(window, width=10)
+# txt.grid(column=0, row=0)
+# txt.focus()
+entr = ttk.Entry(window)
+entr.place(x=1, y=1, width=239, height=40)
+btn_1 = ttk.Button(window,text = "1")
+btn_1.place(x=1, y= 121,width=80, height=80)
+btn_2=ttk.Button(window, text = "2")
+btn_2.place(x=81, y= 121,width=80, height=80)
+btn_3=ttk.Button(window, text = "3")
+btn_3.place(x=161, y= 121,width=80, height=80)
+btn_4=ttk.Button(window, text = "4")
+btn_4.place(x=1, y= 201,width=80, height=80)
+btn_5 = ttk.Button(window, text = "5")
+btn_5.place(x=81, y= 201,width=80, height=80)
+btn_6=ttk.Button(window, text="6")
+btn_6.place(x=161, y= 201,width=80, height=80)
+btn_7 = ttk.Button(window, text = "7")
+btn_7.place(x=1, y= 281,width=80, height=80)
+btn_8 = ttk.Button(window, text = "8")
+btn_8.place(x=81, y=281,width=80, height=80)
+btn_9 = ttk.Button(window, text = "9")
+btn_9.place(x=161, y= 281,width=80, height=80)
+btn_clear = ttk.Button(window, text = "C")
+btn_clear.place(x=1,y = 41, width = 80, height=80)
+btn_left_bracket = ttk.Button(window, text = "(")
+btn_left_bracket.place(x=81,y = 41, width = 80, height=80)
+btn_right_bracket = ttk.Button(window, text = ")")
+btn_right_bracket.place(x=161,y = 41, width = 80, height=80)
+btn_multiplication = ttk.Button(window, text = "*")
+btn_multiplication.place(x=241,y = 41, width = 80, height=80)
+btn_division = ttk.Button(window, text = "/")
+btn_division.place(x=241,y = 121, width = 80, height=80)
+btn_addition = ttk.Button(window, text = "+")
+btn_addition.place(x=241,y = 201, width = 80, height=80)
+btn_substraction = ttk.Button(window, text = "-")
+btn_substraction.place(x=241,y = 281, width = 80, height=80)
+btn_dot = ttk.Button(window, text = ".")
+btn_dot.place(x=1,y = 361, width = 80, height=80)
+btn_0 = ttk.Button(window, text = "0")
+btn_0.place(x=81,y = 361, width = 80, height=80)
+btn_power = ttk.Button(window, text = "^")
+btn_power.place(x=161,y = 361, width = 80, height=80)
+btn_equal = ttk.Button(window, text = "=")
+btn_equal.place(x=241,y = 361, width = 80, height=80)
+# icon = PhotoImage(file="icon.png")
+# icon = icon.subsample(35, 35)
+# btn_delete = ttk.Button(window, image=icon)
+btn_delete = ttk.Button(window, text = "DEL")
+btn_delete.place(x=241,y = 0, width = 80, height=42)
+
+
+
+
+window.mainloop()
+
+
+
