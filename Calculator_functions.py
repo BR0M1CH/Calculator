@@ -8,7 +8,6 @@ def enter():
     while "" in expression: expression.remove("")
     while None in expression: expression.remove(None)
     return(expression)
-expression = enter()
 
 
 def bracket_finder():
@@ -119,17 +118,18 @@ def complex_converter():
     while None in expression:
         expression.remove(None)
             
-
-complex_converter()
-while "(" in expression:
-    left_index, right_index = bracket_finder()
-    bracket_calc(left_index, right_index)
-while len(expression) > 2:
-    main_calc()
-if expression[0].imag == 0j:
-    print(expression[0].real)
-else:
-    print(expression[0])
+if __name__ == "__main__":
+    expression = enter()
+    complex_converter()
+    while "(" in expression:
+        left_index, right_index = bracket_finder()
+        bracket_calc(left_index, right_index)
+    while len(expression) > 2:
+        main_calc()
+    if expression[0].imag == 0j:
+        print(expression[0].real)
+    else:
+        print(expression[0])
 
 
 
