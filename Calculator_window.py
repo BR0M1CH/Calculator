@@ -11,18 +11,38 @@ import Calculator_functions as calc
 def get_exp():
     return(entr.get())
 
-def wrong_enter(expression):
+def wrong_enter(expression1):
+    expression = ""
+    for i in expression1: expression += "".join(i)
     a = 0
     result=re.findall(r"[^0-9ij*+-=/^().]", expression)
     if result != []:
-        print("!!!Checker NOT DONE!!!")
         messagebox.showinfo("Ошибка", "Вы ввели некорректный символ")
         a = 1
     if expression.count("(") != expression.count(")"):
-        print("!!!Checker NOT DONE!!!")
         messagebox.showinfo("Ошибка", "Количество открывающих скобок отлично от количества закрывающих скобок, устраните проблему")
         a = 1
     return(a)
+
+
+def complex_checker(expression):
+    print(expression)
+    res, a = [], 0
+    for i in range(len(expression)):
+        if "i" in expression[i]:
+            res.append(i)
+    print(res)
+    if "i" in expression[-1]:
+            a = 1
+            messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
+    print(a)
+    if a != 1:
+        for i in res:
+            if (expression[i+1]!=")") or (expression[i-3] != ")"):
+                a = 1
+                messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
+                break
+        return(a)
 
 
 def get_index():
@@ -125,8 +145,8 @@ def btn_delete_clicked():
 def btn_clear_clicked():
     global log
     log.append("CLEAR")
-    txt.set("")
-    # entr.delete(first=0, last = END)
+    # txt.set("")
+    entr.delete(first=0, last = END)
 
 def btn_dot_clicked():
     global log
@@ -141,18 +161,22 @@ def btn_i_clicked():
 def btn_equal_clicked():
     global log
     if "=" not in log[-1]:
-        log.append("=")
         while True:
-            expression = entr.get()
-            print("Get entry DONE")
-            if wrong_enter(expression) == 1:
-                print("!!!Checker NOT DONE!!!")
-                raise Exception
-            else:
-                break
-        print("Checker DONE")
-        expression = calc.enter_splitter(expression)
-        print("Splitter DONE")
+            try:
+                expression = entr.get()
+                expression = calc.enter_splitter(expression)
+                print("Enter DONE")
+                if wrong_enter(expression) == 1:
+                    print("!!!Checker NOT DONE!!!")
+                    raise Exception
+                elif complex_checker(expression) == 1:
+                    print("!!!Complex Cheker NOT DONE!!!")
+                    raise Exception
+                else:
+                    print("Checker DONE")
+                    log.append("=")
+                    break
+            except: btn_equal_clicked()
         expression = calc.complex_converter(expression)
         print("Complex convertation DONE")
         while "(" in expression:
@@ -179,9 +203,7 @@ window = Tk()
 window.title("Calculator")
 window.geometry("325x445")
 
-txt = StringVar()
-
-entr = ttk.Entry(window, textvariable=txt)
+entr = ttk.Entry(window)
 entr.place(x=1, y=1, width=239, height=40)
 
 btn_1 = ttk.Button(window,text = "1", command=btn_1_clicked)
@@ -254,7 +276,7 @@ btn_i=ttk.Button(window, text = "i", command = btn_i_clicked)
 btn_i.place(x=1, y=41, width=80, height=80)
 
 
-warn = ttk.Label(window, textvariable=txt)
+warn = ttk.Label(window)
 
 log = []
 
