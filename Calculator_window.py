@@ -11,7 +11,43 @@ import Calculator_functions as calc
 def get_exp():
     return(entr.get())
 
-def wrong_enter(expression1):
+
+def ops_checker(expression):
+    a = 0
+    op_set = ("+-", "-+", "*/", "+/", "/+", "+*", "*+", "-/", "/-", "-*", "*-", "^-", "^+", "^*", "^/")
+    for i in op_set:
+        if i in expression:
+            messagebox.showinfo("Ошибка", "Вы написали два операнда подряд")
+            a = 1
+            break
+    res = re.findall(r"([)][0-9]|[0-9][(])", expression)
+    if len(res) != 0:
+        messagebox.showinfo("Ошибка","Вы пропустили знак между числом и скобкой")
+        a = 1
+    return(a)
+        
+
+def dot_checker_prev(expression):
+    a = 0
+    res = re.findall(r"[.]{2,}", expression)
+    if len(res) != 0:
+        messagebox.showinfo("Ошибка", "В выражении присутствует несколько точек подряд")
+        a = 1
+    return(a)
+
+
+def dot_checker(expression1):
+    a = 0
+    expression = [i for i in expression1]
+    for i in expression:
+        if expression == ".":
+            messagebox.showinfo("Ошибка", "У вас в выражении одинокая точка...")
+            a = 1
+            break
+    return(a)
+
+
+def bracket_checker(expression1):
     expression = ""
     for i in expression1: expression += "".join(i)
     a = 0
@@ -25,24 +61,27 @@ def wrong_enter(expression1):
     return(a)
 
 
-def complex_checker(expression):
-    print(expression)
+def complex_checker(expression1):
+    expression=[i for i in expression1]
     res, a = [], 0
     for i in range(len(expression)):
         if "i" in expression[i]:
             res.append(i)
-    print(res)
+    for i in res:
+        if expression[i].count("i") > 1:
+            a=1
+            messagebox.showinfo("Ошибка", "Вы ввели больше одного символа 'i' подряд")
+            break
     if "i" in expression[-1]:
-            a = 1
+            a = int(1)
             messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
-    print(a)
     if a != 1:
         for i in res:
-            if (expression[i+1]!=")") or (expression[i-3] != ")"):
-                a = 1
+            if (expression[i+1]!=")") or (expression[i-3] != "("):
+                a = int(1)
                 messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
                 break
-        return(a)
+    return(a)
 
 
 def get_index():
@@ -161,22 +200,31 @@ def btn_i_clicked():
 def btn_equal_clicked():
     global log
     if "=" not in log[-1]:
-        while True:
-            try:
-                expression = entr.get()
-                expression = calc.enter_splitter(expression)
-                print("Enter DONE")
-                if wrong_enter(expression) == 1:
-                    print("!!!Checker NOT DONE!!!")
-                    raise Exception
-                elif complex_checker(expression) == 1:
-                    print("!!!Complex Cheker NOT DONE!!!")
-                    raise Exception
-                else:
-                    print("Checker DONE")
-                    log.append("=")
-                    break
-            except: btn_equal_clicked()
+        expression = entr.get()
+        print("CHECKERS0=", dot_checker_prev(expression), ops_checker(expression))
+        if dot_checker_prev(expression) == 1:
+            print("!!!Prev Dot checker NOT DONE!!!")
+            log.append("warn0")
+        elif ops_checker(expression) == 1:
+            print("!!!Operator Checker NOT DONE!!!")
+            log.append("warn0")
+        expression = calc.enter_splitter(expression)
+        print("CHEKERS1= ", dot_checker(expression), bracket_checker(expression),complex_checker(expression))
+        if dot_checker(expression) == 1:
+            print("!!!Dot Checker NOT DONE!!!")
+            log.append("warn1")
+        elif bracket_checker(expression) == 1:
+            print("!!!Bracket Checker NOT DONE!!!")
+            log.append("warn1")
+        elif complex_checker(expression) == 1:
+            print("!!!Complex Cheker NOT DONE!!!")
+            log.append("warn1")
+        print(log)
+        if log[-1] == "warn0" or log[-1] == "warn1": 
+            return
+        else:
+            print("Checker DONE")
+            log.append("=")
         expression = calc.complex_converter(expression)
         print("Complex convertation DONE")
         while "(" in expression:
@@ -188,13 +236,16 @@ def btn_equal_clicked():
         print("Main calculation DONE")
         expression = expression[0]
         if expression.imag == 0j:
-            expression = expression.real
+            expression = round(expression.real,4)
+        else:
+            expression = complex(round(expression.real, 4), round(expression.imag,4))
         entr.insert(END, f"={expression}")
         log[-1] += "".join(str(expression))
     else:
         entr.delete(0, END)
         entr.insert(0, log[-1])
         entr.delete(0,1)
+        log.append("last desicion returned")
 
 
 
@@ -282,6 +333,3 @@ log = []
 
 if __name__ == "__main__":
     window.mainloop()
-
-
-
