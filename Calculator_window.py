@@ -13,76 +13,89 @@ def get_exp():
 
 
 def ops_checker(expression):
-    a = 0
+    global log
     op_set = ("+-", "-+", "*/", "+/", "/+", "+*", "*+", "-/", "/-", "-*", "*-", "^-", "^+", "^*", "^/")
     for i in op_set:
         if i in expression:
+            print("!!!Operator checker NOT DONE!!!")
+            log.append("warn0")
             messagebox.showinfo("Ошибка", "Вы написали два операнда подряд")
-            a = 1
-            break
+            return(False)
     res = re.findall(r"([)][0-9]|[0-9][(])", expression)
     if len(res) != 0:
+        print("!!!Operator Checker NOT DONE!!!")
+        log.append("warn0")
         messagebox.showinfo("Ошибка","Вы пропустили знак между числом и скобкой")
-        a = 1
-    return(a)
+        return(False)
+    else: return(True)
         
 
 def dot_checker_prev(expression):
-    a = 0
+    global log
     res = re.findall(r"[.]{2,}", expression)
     if len(res) != 0:
+        print("!!!Prev Dot checker NOT DONE!!!")
+        log.append("warn0")
         messagebox.showinfo("Ошибка", "В выражении присутствует несколько точек подряд")
-        a = 1
-    return(a)
+        return(False)
+    else: return(True)
 
 
 def dot_checker(expression1):
-    a = 0
+    global log
     expression = [i for i in expression1]
     for i in expression:
         if expression == ".":
+            print("!!!Dot checker NOT DONE!!!")
+            log.append("warn1")
             messagebox.showinfo("Ошибка", "У вас в выражении одинокая точка...")
-            a = 1
-            break
-    return(a)
+            return(False)
+    return(True)
 
 
 def bracket_checker(expression1):
+    global log
     expression = ""
     for i in expression1: expression += "".join(i)
-    a = 0
-    result=re.findall(r"[^0-9ij*+-=/^().]", expression)
-    if result != []:
-        messagebox.showinfo("Ошибка", "Вы ввели некорректный символ")
-        a = 1
     if expression.count("(") != expression.count(")"):
+        print("!!!Bracket checker NOT DONE!!!")
+        log.append("warn1")
         messagebox.showinfo("Ошибка", "Количество открывающих скобок отлично от количества закрывающих скобок, устраните проблему")
-        a = 1
-    return(a)
+        return(False)
+    else: return(True)
 
 
 def complex_checker(expression1):
+    global log
     expression=[i for i in expression1]
-    res, a = [], 0
+    res = []
     for i in range(len(expression)):
         if "i" in expression[i]:
             res.append(i)
     for i in res:
         if expression[i].count("i") > 1:
-            a=1
+            print("!!!Complex cheker NOT DONE!!!")
+            log.append("warn1")
             messagebox.showinfo("Ошибка", "Вы ввели больше одного символа 'i' подряд")
-            break
+            return(False)
     if "i" in expression[-1]:
-            a = int(1)
+        print("!!!Complex Checker NOT DONE!!!")
+        log.append("warn1")
+        messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
+        return(False)
+    for i in res:
+        if (expression[i+1]!=")") or (expression[i-3] != "("):
+            print("!!!Complex cheker NOT DONE!!!")
+            log.append("warn1")
             messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
-    if a != 1:
-        for i in res:
-            if (expression[i+1]!=")") or (expression[i-3] != "("):
-                a = int(1)
-                messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
-                break
-    return(a)
+            return(False)
+    return(True)
 
+def checker_warn_0(expression):
+    return(dot_checker_prev(expression) and ops_checker(expression))
+
+def checker_warn_1(expression):
+    return(complex_checker(expression) and bracket_checker(expression) and dot_checker(expression))
 
 def get_index():
     return(entr.index(INSERT))
@@ -202,25 +215,18 @@ def btn_equal_clicked():
     if "=" not in log[-1]:
         expression = entr.get()
         print("CHECKERS0=", dot_checker_prev(expression), ops_checker(expression))
-        if dot_checker_prev(expression) == 1:
-            print("!!!Prev Dot checker NOT DONE!!!")
-            log.append("warn0")
-        elif ops_checker(expression) == 1:
-            print("!!!Operator Checker NOT DONE!!!")
-            log.append("warn0")
-        expression = calc.enter_splitter(expression)
+        if not ops_checker(expression):
+            return
+        elif not dot_checker_prev(expression):
+            return
+        else:
+            expression = calc.enter_splitter(expression)
         print("CHEKERS1= ", dot_checker(expression), bracket_checker(expression),complex_checker(expression))
-        if dot_checker(expression) == 1:
-            print("!!!Dot Checker NOT DONE!!!")
-            log.append("warn1")
-        elif bracket_checker(expression) == 1:
-            print("!!!Bracket Checker NOT DONE!!!")
-            log.append("warn1")
-        elif complex_checker(expression) == 1:
-            print("!!!Complex Cheker NOT DONE!!!")
-            log.append("warn1")
-        print(log)
-        if log[-1] == "warn0" or log[-1] == "warn1": 
+        if not bracket_checker(expression):
+            return
+        elif not complex_checker(expression): 
+            return
+        elif not dot_checker(expression):
             return
         else:
             print("Checker DONE")
