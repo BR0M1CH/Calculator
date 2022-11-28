@@ -9,6 +9,25 @@ import json
 import Calculator_functions as calc
 
 
+def log_to_json():
+    global log
+    with open("LOGS.json", "r") as l:
+        log_1 = json.load(l)
+    log.update(log_1)
+    with open("LOGS.json", "w") as l:
+        json.dump(log, l, indent=4)
+
+
+def full_log_clear():
+    global log
+    with open("LOGS.json", "w") as l:
+        json.dump("", l)
+
+def log_show():
+    global log
+    messagebox.showinfo("Logs", log)
+
+
 def log_appender():
     global log
     log[time.time()]=("warn2")
@@ -19,18 +38,18 @@ def get_exp():
 
 def ops_checker(expression):
     global log
-    op_set = ("+-", "-+", "*/", "+/", "/+", "+*", "*+", "-/", "/-", "-*", "*-", "^-", "^+", "^*", "^/")
+    op_set = ("+-", "-+", "*/", "+/", "/+", "+*", "*+", "-/", "/-", "-*", "*-", "^-", "^+", "^*", "^/", "+)", "*)", "-)", "/)", "^)","(+","(-","(*","(/","(^")
     for i in op_set:
         if i in expression:
             print("!!!Operator checker NOT DONE!!!")
             log[time.time()]=("warn0")
-            messagebox.showinfo("Ошибка", "Вы написали два операнда подряд")
+            messagebox.showwarning("Ошибка", "Вы написали два операнда подряд")
             return(False)
     res = re.findall(r"([)][0-9]|[0-9][(])", expression)
     if len(res) != 0:
         print("!!!Operator Checker NOT DONE!!!")
         log[time.time()]=("warn0")
-        messagebox.showinfo("Ошибка","Вы пропустили знак между числом и скобкой")
+        messagebox.showwarning("Ошибка","Вы пропустили знак между числом и скобкой")
         return(False)
     else: return(True)
         
@@ -41,7 +60,7 @@ def dot_checker_prev(expression):
     if len(res) != 0:
         print("!!!Prev Dot checker NOT DONE!!!")
         log[time.time()]=("warn0")
-        messagebox.showinfo("Ошибка", "В выражении присутствует несколько точек подряд")
+        messagebox.showwarning("Ошибка", "В выражении присутствует несколько точек подряд")
         return(False)
     else: return(True)
 
@@ -53,7 +72,7 @@ def dot_checker(expression1):
         if expression == ".":
             print("!!!Dot checker NOT DONE!!!")
             log[time.time()]=("warn1")
-            messagebox.showinfo("Ошибка", "У вас в выражении одинокая точка...")
+            messagebox.showwarning("Ошибка", "У вас в выражении одинокая точка...")
             return(False)
     return(True)
 
@@ -65,7 +84,7 @@ def bracket_checker(expression1):
     if expression.count("(") != expression.count(")"):
         print("!!!Bracket checker NOT DONE!!!")
         log[time.time()]=("warn1")
-        messagebox.showinfo("Ошибка", "Количество открывающих скобок отлично от количества закрывающих скобок, устраните проблему")
+        messagebox.showwarning("Ошибка", "Количество открывающих скобок отлично от количества закрывающих скобок, устраните проблему")
         return(False)
     else: return(True)
 
@@ -81,18 +100,18 @@ def complex_checker(expression1):
         if expression[i].count("i") > 1:
             print("!!!Complex cheker NOT DONE!!!")
             log[time.time()]=("warn1")
-            messagebox.showinfo("Ошибка", "Вы ввели больше одного символа 'i' подряд")
+            messagebox.showwarning("Ошибка", "Вы ввели больше одного символа 'i' подряд")
             return(False)
     if "i" in expression[-1]:
         print("!!!Complex Checker NOT DONE!!!")
         log[time.time()]=("warn1")
-        messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
+        messagebox.showwarning("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
         return(False)
     for i in res:
         if (expression[i+1]!=")") or (expression[i-3] != "("):
             print("!!!Complex cheker NOT DONE!!!")
             log[time.time()]=("warn1")
-            messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
+            messagebox.showwarning("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
             return(False)
     return(True)
 
@@ -332,7 +351,6 @@ def light_theme():
     window.configure(background="white")
     entr.configure(background="white", fg="#303030", selectbackground="#CDCDB7", font="Dubai 12" )
     menu.configure(background="#CAE1FF", foreground="#6A6A5A", activebackground="#A2B5CD", activeforeground="#6A6A5A")
-    theme.configure(background="#CAE1FF", foreground="#6A6A5A", activebackground="#A2B5CD", activeforeground="#6A6A5A")
     log[time.time()] = "Light Theme"
 
 
@@ -415,7 +433,6 @@ def dark_theme():
     btn_i.bind("<Leave>", lambda e:btn_i.configure(bg=bg_per))
     entr.configure(background=bg_main, fg=fg_main, selectbackground="#CDCDB7", font="Dubai", insertbackground=fg_per)
     window.configure(background="black")
-    theme.configure(background=bg_main, foreground=fg_main, activebackground=bg_ent, activeforeground=act_fg)
     log[time.time()] = "Dark Theme"
 
 
@@ -506,7 +523,11 @@ theme.add_separator()
 theme.add_command(label = "Dark Theme", command = dark_theme)
 menu.add_cascade(label = "Theme", menu=theme)
 window.config(menu=menu)
-
+logs = Menu(menu, tearoff=0)
+logs.add_command(label="Export logs", command=log_to_json)
+logs.add_command(label = "Clear external log storage", command = full_log_clear)
+logs.add_command(label = "Show logs", command=log_show)
+menu.add_cascade(label = "Logs", menu=logs)
 log = {}
 
 dark_theme()
