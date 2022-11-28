@@ -1,5 +1,5 @@
 import re
-from TEST import get_exp, bracket_checker
+import Calculator_window as wind
 from tkinter import *
 from tkinter import ttk
 
@@ -36,9 +36,15 @@ def calc_func(op, index, iterable1):
         iterable.pop(index+1)
         iterable.pop(index-1)
     elif op == "/":
-        iterable[index] = (iterable[index-1]) / (iterable[index+1])
-        iterable.pop(index+1)
-        iterable.pop(index-1)
+        if (iterable[index+1]) != 0:
+            iterable[index] = (iterable[index-1]) / (iterable[index+1])
+            iterable.pop(index+1)
+            iterable.pop(index-1)
+        else: 
+            print("!!!Calculation NOT DONE!!!")
+            wind.log_appender()
+            wind.messagebox.showinfo("Ошибка", "Деление на 0!")
+            return("Error")
     elif op == "+":
         iterable[index] = (iterable[index-1]) + (iterable[index+1])
         iterable.pop(index+1)
@@ -66,6 +72,8 @@ def bracket_calc(left_index, right_index, expression1):
             helper_index.pop(0)
         helper_index = index_in_dict("*", "/", helper)
         while helper_index != []:
+            if calc_func(helper[helper_index[0]],helper_index[0],helper) == "Error":
+                return("Error")
             helper = calc_func(helper[helper_index[0]],helper_index[0],helper)
             helper_index.pop(0)
         helper_index = index_in_dict("+", "-", helper)
@@ -89,8 +97,11 @@ def main_calc(expression1):
         helper_index.pop(0)
     while "*" in expression or "/" in expression:
         helper_index = index_in_dict("*", "/", expression)
-        expression = calc_func(expression[helper_index[0]], helper_index[0], expression)
-        helper_index.pop(0)
+        if calc_func(expression[helper_index[0]],helper_index[0],expression) == "Error":
+                return("Error")
+        else:
+            expression = calc_func(expression[helper_index[0]], helper_index[0], expression)
+            helper_index.pop(0)
     while "+" in expression or "-" in expression:
         helper_index = index_in_dict("+", "-", expression)
         expression = calc_func(expression[helper_index[0]], helper_index[0], expression)
