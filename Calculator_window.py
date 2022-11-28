@@ -8,6 +8,10 @@ import re
 import Calculator_functions as calc
 
 
+def log_appender():
+    global log
+    log.append("warn2")
+
 def get_exp():
     return(entr.get())
 
@@ -91,11 +95,6 @@ def complex_checker(expression1):
             return(False)
     return(True)
 
-def checker_warn_0(expression):
-    return(dot_checker_prev(expression) and ops_checker(expression))
-
-def checker_warn_1(expression):
-    return(complex_checker(expression) and bracket_checker(expression) and dot_checker(expression))
 
 def get_index():
     return(entr.index(INSERT))
@@ -235,10 +234,16 @@ def btn_equal_clicked():
         print("Complex convertation DONE")
         while "(" in expression:
             left_index, right_index = calc.bracket_finder(expression)
-            expression = calc.bracket_calc(left_index, right_index, expression)
+            if calc.bracket_calc(left_index, right_index, expression) == "Error":
+                return
+            else:
+                expression = calc.bracket_calc(left_index, right_index, expression)
         print("Bracket calculation DONE")
         while len(expression)>1:
-            expression = calc.main_calc(expression)
+            if calc.main_calc(expression) == "Error":
+                return
+            else:
+                expression = calc.main_calc(expression)
         print("Main calculation DONE")
         expression = expression[0]
         if expression.imag == 0j:
