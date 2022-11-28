@@ -11,7 +11,7 @@ import Calculator_functions as calc
 
 def log_appender():
     global log
-    log.append("warn2")
+    log[time.time()]=("warn2")
 
 def get_exp():
     return(entr.get())
@@ -23,13 +23,13 @@ def ops_checker(expression):
     for i in op_set:
         if i in expression:
             print("!!!Operator checker NOT DONE!!!")
-            log.append("warn0")
+            log[time.time()]=("warn0")
             messagebox.showinfo("Ошибка", "Вы написали два операнда подряд")
             return(False)
     res = re.findall(r"([)][0-9]|[0-9][(])", expression)
     if len(res) != 0:
         print("!!!Operator Checker NOT DONE!!!")
-        log.append("warn0")
+        log[time.time()]=("warn0")
         messagebox.showinfo("Ошибка","Вы пропустили знак между числом и скобкой")
         return(False)
     else: return(True)
@@ -40,7 +40,7 @@ def dot_checker_prev(expression):
     res = re.findall(r"[.]{2,}", expression)
     if len(res) != 0:
         print("!!!Prev Dot checker NOT DONE!!!")
-        log.append("warn0")
+        log[time.time()]=("warn0")
         messagebox.showinfo("Ошибка", "В выражении присутствует несколько точек подряд")
         return(False)
     else: return(True)
@@ -52,7 +52,7 @@ def dot_checker(expression1):
     for i in expression:
         if expression == ".":
             print("!!!Dot checker NOT DONE!!!")
-            log.append("warn1")
+            log[time.time()]=("warn1")
             messagebox.showinfo("Ошибка", "У вас в выражении одинокая точка...")
             return(False)
     return(True)
@@ -64,7 +64,7 @@ def bracket_checker(expression1):
     for i in expression1: expression += "".join(i)
     if expression.count("(") != expression.count(")"):
         print("!!!Bracket checker NOT DONE!!!")
-        log.append("warn1")
+        log[time.time()]=("warn1")
         messagebox.showinfo("Ошибка", "Количество открывающих скобок отлично от количества закрывающих скобок, устраните проблему")
         return(False)
     else: return(True)
@@ -80,18 +80,18 @@ def complex_checker(expression1):
     for i in res:
         if expression[i].count("i") > 1:
             print("!!!Complex cheker NOT DONE!!!")
-            log.append("warn1")
+            log[time.time()]=("warn1")
             messagebox.showinfo("Ошибка", "Вы ввели больше одного символа 'i' подряд")
             return(False)
     if "i" in expression[-1]:
         print("!!!Complex Checker NOT DONE!!!")
-        log.append("warn1")
+        log[time.time()]=("warn1")
         messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
         return(False)
     for i in res:
         if (expression[i+1]!=")") or (expression[i-3] != "("):
             print("!!!Complex cheker NOT DONE!!!")
-            log.append("warn1")
+            log[time.time()]=("warn1")
             messagebox.showinfo("Ошибка", f"Ошибка в заключении комплексного числа в скобки, проверьте {expression[i-2]}{expression[i-1]}{expression[i]}")
             return(False)
     return(True)
@@ -103,82 +103,82 @@ def get_index():
 def btn_1_clicked():
     global log
     entr.insert(get_index(), "1")
-    log[time.asctime()] = "1"
+    log[time.time()] = "1"
 
 def btn_2_clicked():
     global log
     entr.insert(get_index(), "2")
-    log.append("2")
+    log[time.time()] = "2"
 
 def btn_3_clicked():
     global log
-    log.append("3")
     entr.insert(get_index(), "3")
+    log[time.time()] = "3"
 
 def btn_4_clicked():
     global log
-    log.append("4")
     entr.insert(get_index(), "4")
+    log[time.time()] = "4"
 
 def btn_5_clicked():
     global log
-    log.append("5")
     entr.insert(get_index(), "5")
+    log[time.time()] = "5"
 
 def btn_6_clicked():
     global log
-    log.append("6")
     entr.insert(get_index(), "6")
+    log[time.time()] = "6"
 
 def btn_7_clicked():
     global log
-    log.append("7")
     entr.insert(get_index(), "7")
+    log[time.time()] = "7"
 
 def btn_8_clicked():
     global log
-    log.append("8")
     entr.insert(get_index(), "8")
+    log[time.time()] = "8"
 
 def btn_9_clicked():
     global log
-    log.append("9")
     entr.insert(get_index(), "9")
+    log[time.time()] = "9"
 
 def btn_0_clicked():
     global log
-    log.append("0")
     entr.insert(get_index(), "0")
+    log[time.time()] = "0"
 
 def btn_multiplication_clicked():
     global log
-    log.append("*")
     entr.insert(get_index(), "*")
+    log[time.time()] = "*"
 
 def btn_addition_clicked():
     global log
-    log.append("+")
     entr.insert(get_index(), "+")
+    log[time.time()] = "+"
 
 def btn_division_clicked():
     global log
-    log.append("/")
     entr.insert(get_index(), "/")
+    log[time.time()] = "/"
 
 def btn_substraction_clicked():
     global log
-    log.append("-")
     entr.insert(get_index(), "-")
+    log[time.time()] = "-"
 
 def btn_power_clicked():
     global log
-    log.append("^")
     entr.insert(get_index(), "^")
+    log[time.time()] = "^"
 
 def btn_right_bracket_clicked():
     global log
-    log.append(")")
     entr.insert(get_index(), ")")
+    log[time.time()] = ")"
 
 def btn_clearlog_clicked():
     global log
@@ -186,33 +186,32 @@ def btn_clearlog_clicked():
 
 def btn_left_bracket_clicked():
     global log
-    log.append("(")
     entr.insert(get_index(), "(")
+    log[time.time()] = "("
 
 def btn_delete_clicked():
     global log
-    log.append("DEL")
     entr.delete(first=get_index()-1, last=None)
+    log[time.time()] = "DEL"
 
 def btn_clear_clicked():
     global log
-    log.append("CLEAR")
-    # txt.set("")
     entr.delete(first=0, last = END)
+    log[time.time()] = "CLEAR"
 
 def btn_dot_clicked():
     global log
-    log.append(".")
     entr.insert(get_index(), ".")
+    log[time.time()] = "."
 
 def btn_i_clicked():
     global log
-    log.append("i")
     entr.insert(get_index(), "i")
+    log[time.time()] = "i"
 
 def btn_equal_clicked():
     global log
-    if "=" not in log[-1]:
+    if "=" not in log[next(reversed(log.keys()))]:
         expression = entr.get()
         print("CHECKERS0=", dot_checker_prev(expression), ops_checker(expression))
         if not ops_checker(expression):
@@ -221,7 +220,6 @@ def btn_equal_clicked():
             return
         else:
             expression = calc.enter_splitter(expression)
-        print("CHEKERS1= ", dot_checker(expression), bracket_checker(expression),complex_checker(expression))
         if not bracket_checker(expression):
             return
         elif not complex_checker(expression): 
@@ -230,7 +228,7 @@ def btn_equal_clicked():
             return
         else:
             print("Checker DONE")
-            log.append("=")
+            log[time.time()] = "="
         expression = calc.complex_converter(expression)
         print("Complex convertation DONE")
         while "(" in expression:
@@ -252,12 +250,12 @@ def btn_equal_clicked():
         else:
             expression = complex(round(expression.real, 4), round(expression.imag,4))
         entr.insert(END, f"={expression}")
-        log[-1] += "".join(str(expression))
+        log[next(reversed(log.keys()))] += "".join(str(expression))
     else:
         entr.delete(0, END)
-        entr.insert(0, log[-1])
+        entr.insert(0, log[next(reversed(log.keys()))])
         entr.delete(0,1)
-        log.append("last desicion returned")
+        log[time.time()]=("last desicion returned")
 
     
 background="#6B6B6B"
@@ -335,6 +333,8 @@ def light_theme():
     entr.configure(background="white", fg="#303030", selectbackground="#CDCDB7", font="Dubai 12" )
     menu.configure(background="#CAE1FF", foreground="#6A6A5A", activebackground="#A2B5CD", activeforeground="#6A6A5A")
     theme.configure(background="#CAE1FF", foreground="#6A6A5A", activebackground="#A2B5CD", activeforeground="#6A6A5A")
+    log[time.time()] = "Light Theme"
+
 
 def dark_theme():
     bg_main ="#383838"
@@ -416,6 +416,7 @@ def dark_theme():
     entr.configure(background=bg_main, fg=fg_main, selectbackground="#CDCDB7", font="Dubai", insertbackground=fg_per)
     window.configure(background="black")
     theme.configure(background=bg_main, foreground=fg_main, activebackground=bg_ent, activeforeground=act_fg)
+    log[time.time()] = "Dark Theme"
 
 
 
@@ -506,11 +507,10 @@ theme.add_command(label = "Dark Theme", command = dark_theme)
 menu.add_cascade(label = "Theme", menu=theme)
 window.config(menu=menu)
 
+log = {}
 
 dark_theme()
 
-
-log = {}
 
 if __name__ == "__main__":
     window.mainloop()
