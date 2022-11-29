@@ -252,12 +252,14 @@ def btn_equal_clicked():
         while "(" in expression:
             left_index, right_index = calc.bracket_finder(expression)
             if calc.bracket_calc(left_index, right_index, expression) == "Error":
+                log[time.asctime()] = "warn2"
                 return
             else:
                 expression = calc.bracket_calc(left_index, right_index, expression)
         print("Bracket calculation DONE")
         while len(expression)>1:
             if calc.main_calc(expression) == "Error":
+                log[time.asctime()] = "warn2"
                 return
             else:
                 expression = calc.main_calc(expression)

@@ -2,6 +2,9 @@ import re
 import Calculator_window as wind
 from tkinter import *
 from tkinter import ttk
+import time
+
+
 
 def enter_splitter(expression):
     expression = re.split(r"([0-9.ij]+)|(\W^.)?", expression)
@@ -42,7 +45,6 @@ def calc_func(op, index, iterable1):
             iterable.pop(index-1)
         else: 
             print("!!!Calculation NOT DONE!!!")
-            wind.log_appender()
             wind.messagebox.showinfo("Ошибка", "Деление на 0!")
             return("Error")
     elif op == "+":
@@ -111,14 +113,14 @@ def main_calc(expression1):
 
 
 
-def index_in_dict(op1, op2, iterable):                #Возвращает список индексов двух указанных операторов в указываемом списке
+def index_in_dict(op1, op2, iterable):                
     helper_index = []
     for i in range(len(iterable)):
         if iterable[i] == op1 or iterable[i] == op2:
             helper_index.append(i)
     return helper_index
 
-def index_in_dict_pow(op1, iterable):                #Возвращает список индексов двух указанных операторов в указываемом списке
+def index_in_dict_pow(op1, iterable):                
     helper_index = []
     for i in range(len(iterable)):
         if iterable[i] == op1:
