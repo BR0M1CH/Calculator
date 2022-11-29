@@ -38,7 +38,7 @@ def get_exp():
 
 def ops_checker(expression):
     global log
-    op_set = ("+-", "-+", "*/", "+/", "/+", "+*", "*+", "-/", "/-", "-*", "*-", "^-", "^+", "^*", "^/", "+)", "*)", "-)", "/)", "^)","(+","(-","(*","(/","(^")
+    op_set = ("+-", "-+", "*/", "+/", "/+", "+*", "*+", "-/", "/-", "-*", "*-", "^-", "^+", "^*", "^/", "+)", "*)", "-)", "/)", "^)","(+","(-","(*","(/","(^", "(.", ").")
     for i in op_set:
         if i in expression:
             print("!!!Operator checker NOT DONE!!!")
@@ -51,7 +51,7 @@ def ops_checker(expression):
         log[time.time()]=("warn0")
         messagebox.showwarning("Ошибка","Вы пропустили знак между числом и скобкой")
         return(False)
-    else: return(True)
+    return(True)
         
 
 def dot_checker_prev(expression):
@@ -62,14 +62,14 @@ def dot_checker_prev(expression):
         log[time.time()]=("warn0")
         messagebox.showwarning("Ошибка", "В выражении присутствует несколько точек подряд")
         return(False)
-    else: return(True)
+    return(True)
 
 
 def dot_checker(expression1):
     global log
     expression = [i for i in expression1]
     for i in expression:
-        if expression == ".":
+        if i == ".":
             print("!!!Dot checker NOT DONE!!!")
             log[time.time()]=("warn1")
             messagebox.showwarning("Ошибка", "У вас в выражении одинокая точка...")
@@ -232,7 +232,6 @@ def btn_equal_clicked():
     global log
     if "=" not in log[next(reversed(log.keys()))]:
         expression = entr.get()
-        print("CHECKERS0=", dot_checker_prev(expression), ops_checker(expression))
         if not ops_checker(expression):
             return
         elif not dot_checker_prev(expression):
@@ -349,7 +348,7 @@ def light_theme():
     btn_i.bind("<Enter>", lambda e:btn_i.configure(bg="#A2B5CD"))
     btn_i.bind("<Leave>", lambda e:btn_i.configure(bg="#BCD2EE"))
     window.configure(background="white")
-    entr.configure(background="white", fg="#303030", selectbackground="#CDCDB7", font="Dubai 12" )
+    entr.configure(background="white", fg="#303030", selectbackground="#CDCDB7", font="Dubai", insertbackground="#6B6B6B" )
     menu.configure(background="#CAE1FF", foreground="#6A6A5A", activebackground="#A2B5CD", activeforeground="#6A6A5A")
     log[time.time()] = "Light Theme"
 
@@ -435,103 +434,104 @@ def dark_theme():
     window.configure(background="black")
     log[time.time()] = "Dark Theme"
 
-
-
-window = Tk()
-window.title("Calculator")
-window.geometry("325x445")
-
-
-entr = Entry(window, highlightthickness=0, insertborderwidth=0, relief=FLAT)
-entr.place(x=2, y=1, width=242, height=40)
-entr.bind("<Key>", lambda e: "break")
-
-btn_1 = Button(window,text = "1", command=btn_1_clicked, )
-btn_1.place(x=2, y= 123,width=80, height=80)
-
-btn_2=Button(window, text = "2", command=btn_2_clicked)
-btn_2.place(x=83, y= 123,width=80, height=80)
-
-btn_3=Button(window, text = "3", command=btn_3_clicked)
-btn_3.place(x=164, y= 123,width=80, height=80)
-
-btn_4=Button(window, text = "4", command=btn_4_clicked)
-btn_4.place(x=2, y= 204,width=80, height=80)
-
-btn_5 = Button(window, text = "5", command=btn_5_clicked)
-btn_5.place(x=83, y= 204,width=80, height=80)
-
-btn_6=Button(window, text="6", command=btn_6_clicked)
-btn_6.place(x=164, y= 204,width=80, height=80)
-
-btn_7 = Button(window, text = "7", command=btn_7_clicked)
-btn_7.place(x=2, y= 285,width=80, height=80)
-
-btn_8 = Button(window, text = "8", command=btn_8_clicked)
-btn_8.place(x=83, y=285,width=80, height=80)
-
-btn_9 = Button(window, text = "9", command=btn_9_clicked)
-btn_9.place(x=164, y= 285,width=80, height=80)
-
-btn_clear = Button(window, text = "C", command=btn_clear_clicked)
-btn_clear.place(x=245,y = 1, width = 40, height=19)
-
-btn_left_bracket = Button(window, text = "(", command=btn_left_bracket_clicked)
-btn_left_bracket.place(x=83,y = 42, width = 80, height=80)
-
-btn_right_bracket = Button(window, text = ")", command=btn_right_bracket_clicked)
-btn_right_bracket.place(x=164,y = 42, width = 80, height=80)
-
-btn_multiplication = Button(window, text = "*", command=btn_multiplication_clicked)
-btn_multiplication.place(x=245,y = 42, width = 80, height=80)
-
-btn_division = Button(window, text = "/", command=btn_division_clicked)
-btn_division.place(x=245,y = 123, width = 80, height=80)
-
-btn_addition = Button(window, text = "+", command=btn_addition_clicked)
-btn_addition.place(x=245,y = 204, width = 80, height=80)
-
-btn_substraction = Button(window, text = "-", command=btn_substraction_clicked)
-btn_substraction.place(x=245,y = 285, width = 80, height=80)
-
-btn_dot = Button(window, text = ".", command=btn_dot_clicked)
-btn_dot.place(x=2,y = 366, width = 80, height=80)
-
-btn_0 = Button(window, text = "0", command=btn_0_clicked)
-btn_0.place(x=83,y = 366, width = 80, height=80)
-
-btn_power = Button(window, text = "^", command=btn_power_clicked)
-btn_power.place(x=164,y = 366, width = 80, height=80)
-
-btn_equal = Button(window, text = "=", command=btn_equal_clicked)
-btn_equal.place(x=245,y = 366, width = 80, height=80)
-
-btn_delete = Button(window, text = "DEL", command=btn_delete_clicked)
-btn_delete.place(x=245,y = 21, width = 80, height=20)
-
-btn_clearlog = Button(window, text = "CL", command = btn_clearlog_clicked)
-btn_clearlog.place(x=286, y=1, width=40, height=19)
-
-btn_i= Button(window, text = "i", command = btn_i_clicked)
-btn_i.place(x=2, y=42, width=80, height=80)
-
-
-menu = Menu(window)
-theme = Menu(menu, tearoff=0)
-theme.add_command(label = "Light Theme", command=light_theme)
-theme.add_separator()
-theme.add_command(label = "Dark Theme", command = dark_theme)
-menu.add_cascade(label = "Theme", menu=theme)
-window.config(menu=menu)
-logs = Menu(menu, tearoff=0)
-logs.add_command(label="Export logs", command=log_to_json)
-logs.add_command(label = "Clear external log storage", command = full_log_clear)
-logs.add_command(label = "Show logs", command=log_show)
-menu.add_cascade(label = "Logs", menu=logs)
-log = {}
-
-dark_theme()
-
-
 if __name__ == "__main__":
+
+    window = Tk()
+    window.title("Calculator")
+    window.geometry("325x447")
+    window.resizable(False, False)
+
+
+    entr = Entry(window, highlightthickness=0, insertborderwidth=0, relief=FLAT)
+    entr.place(x=1, y=1, width=242, height=40)
+    entr.bind("<Key>", lambda e: "break")
+
+    btn_1 = Button(window,text = "1", command=btn_1_clicked, )
+    btn_1.place(x=1, y= 123,width=80, height=80)
+
+    btn_2=Button(window, text = "2", command=btn_2_clicked)
+    btn_2.place(x=82, y= 123,width=80, height=80)
+
+    btn_3=Button(window, text = "3", command=btn_3_clicked)
+    btn_3.place(x=163, y= 123,width=80, height=80)
+
+    btn_4=Button(window, text = "4", command=btn_4_clicked)
+    btn_4.place(x=1, y= 204,width=80, height=80)
+
+    btn_5 = Button(window, text = "5", command=btn_5_clicked)
+    btn_5.place(x=82, y= 204,width=80, height=80)
+
+    btn_6=Button(window, text="6", command=btn_6_clicked)
+    btn_6.place(x=163, y= 204,width=80, height=80)
+
+    btn_7 = Button(window, text = "7", command=btn_7_clicked)
+    btn_7.place(x=1, y= 285,width=80, height=80)
+
+    btn_8 = Button(window, text = "8", command=btn_8_clicked)
+    btn_8.place(x=82, y=285,width=80, height=80)
+
+    btn_9 = Button(window, text = "9", command=btn_9_clicked)
+    btn_9.place(x=163, y= 285,width=80, height=80)
+
+    btn_clear = Button(window, text = "C", command=btn_clear_clicked)
+    btn_clear.place(x=244,y = 1, width = 40, height=19)
+
+    btn_left_bracket = Button(window, text = "(", command=btn_left_bracket_clicked)
+    btn_left_bracket.place(x=82,y = 42, width = 80, height=80)
+
+    btn_right_bracket = Button(window, text = ")", command=btn_right_bracket_clicked)
+    btn_right_bracket.place(x=163,y = 42, width = 80, height=80)
+
+    btn_multiplication = Button(window, text = "*", command=btn_multiplication_clicked)
+    btn_multiplication.place(x=244,y = 42, width = 80, height=80)
+
+    btn_division = Button(window, text = "/", command=btn_division_clicked)
+    btn_division.place(x=244,y = 123, width = 80, height=80)
+
+    btn_addition = Button(window, text = "+", command=btn_addition_clicked)
+    btn_addition.place(x=244,y = 204, width = 80, height=80)
+
+    btn_substraction = Button(window, text = "-", command=btn_substraction_clicked)
+    btn_substraction.place(x=244,y = 285, width = 80, height=80)
+
+    btn_dot = Button(window, text = ".", command=btn_dot_clicked)
+    btn_dot.place(x=1,y = 366, width = 80, height=80)
+
+    btn_0 = Button(window, text = "0", command=btn_0_clicked)
+    btn_0.place(x=82,y = 366, width = 80, height=80)
+
+    btn_power = Button(window, text = "^", command=btn_power_clicked)
+    btn_power.place(x=163,y = 366, width = 80, height=80)
+
+    btn_equal = Button(window, text = "=", command=btn_equal_clicked)
+    btn_equal.place(x=244,y = 366, width = 80, height=80)
+
+    btn_delete = Button(window, text = "DEL", command=btn_delete_clicked)
+    btn_delete.place(x=244,y = 21, width = 80, height=20)
+
+    btn_clearlog = Button(window, text = "CL", command = btn_clearlog_clicked)
+    btn_clearlog.place(x=285, y=1, width=39, height=19)
+
+    btn_i= Button(window, text = "i", command = btn_i_clicked)
+    btn_i.place(x=1, y=42, width=80, height=80)
+
+
+    menu = Menu(window)
+    theme = Menu(menu, tearoff=0)
+    theme.add_command(label = "Light Theme", command=light_theme)
+    theme.add_separator()
+    theme.add_command(label = "Dark Theme", command = dark_theme)
+    menu.add_cascade(label = "Theme", menu=theme)
+    window.config(menu=menu)
+    logs = Menu(menu, tearoff=0)
+    logs.add_command(label="Export logs", command=log_to_json)
+    logs.add_command(label = "Clear external log storage", command = full_log_clear)
+    logs.add_command(label = "Show logs", command=log_show)
+    menu.add_cascade(label = "Logs", menu=logs)
+    log = {}
+
+    dark_theme()
+
+
+
     window.mainloop()
